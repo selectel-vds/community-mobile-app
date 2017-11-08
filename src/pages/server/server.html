@@ -1,0 +1,123 @@
+<!--
+  Generated template for the Server page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>
+      <ion-icon name="power" style="margin-right: 5px;" [color]="server.status === 'started' ? 'secondary' : 'danger'"></ion-icon> {{server.name}}
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)" >
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-item>
+        <ion-label>
+          <ion-icon name="power" style="margin-right: 5px;" [color]="server.status === 'started' ? 'secondary' : 'danger'"></ion-icon> <b>{{server.name}}</b>
+        </ion-label>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      {{server.public_address.address}}
+    </ion-card-content>
+    <ion-row *ngIf="!server.locked">
+      <ion-col center text-center *ngIf="server.status === 'stopped'">
+        <button ion-button icon-left clear small (click)="on()">
+          <ion-icon name="power" color="secondary"></ion-icon>
+          <div>{{'POWER_ON' | translate}}</div>
+        </button>
+      </ion-col>
+      <ion-col center text-center *ngIf="server.status === 'started'">
+        <button ion-button icon-left clear small (click)="off()">
+          <ion-icon name="power" color="danger"></ion-icon>
+          <div>{{'POWER_OFF' | translate}}</div>
+        </button>
+      </ion-col>
+      <ion-col center text-center>
+        <button ion-button icon-left clear small (click)="reboot()">
+          <ion-icon name="refresh"></ion-icon>
+          <div>{{'REBOOT' | translate}}</div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-card *ngIf="plan">
+    <ion-card-header *ngIf="location">
+      <ion-item>
+        <ion-label><ion-icon name="pin" style="margin-right: 5px;" color="primary"></ion-icon>{{location.description}}</ion-label>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col center text-center>
+          {{plan.memory}} MB
+        </ion-col>
+        <ion-col center text-center>
+          {{plan.disk / 1024}} GB SSD
+        </ion-col>
+        <ion-col center text-center>
+           {{plan.cpus}} CPU
+        </ion-col>
+      </ion-row>
+      <ion-item>
+        <ion-label>{{'TARIFF' | translate}}</ion-label>
+        <ion-select [(ngModel)]="plan" [cancelText]="'CANCEL' | translate" [okText]="'CHANGE' | translate" (disabled)="server.locked" (ionChange)="onPlanChange()">
+          <ion-option *ngFor="let p of plans" [value]="p" [disabled]="p.memory <= plan.memory">{{p.id}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+    <ion-row *ngIf="!server.locked">
+      <ion-col center text-center>
+        <button ion-button icon-left clear small (click)="backup()">
+          <ion-icon name="cloud-done" color="secondary"></ion-icon>
+          <div>{{'CREATE_BACKUP' | translate}}</div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-card *ngIf="!server.locked">
+    <ion-card-header>
+      <ion-item>
+        <ion-label><ion-icon name="construct" style="margin-right: 5px;" color="danger"></ion-icon> {{'SERVER_MANAGEMENT' | translate}}</ion-label>
+        <ion-toggle checked="false" color="danger" right [(ngModel)]="danger"></ion-toggle>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row *ngIf="danger">
+        <ion-col center text-center>
+          <button ion-button icon-left clear small (click)="delete()">
+            <ion-icon name="trash" color="danger"></ion-icon>
+            <div>{{'DELETE_SERVER' | translate}}</div>
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+          <button ion-button icon-left clear small (click)="rebuild()">
+            <ion-icon name="repeat" color="danger"></ion-icon>
+            <div>{{'REINSTALL_SERVER' | translate}}</div>
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+          <button ion-button icon-left clear small (click)="addSSHKey()">
+            <ion-icon name="key" color="primary"></ion-icon>
+            <div>{{'ADD_SSH_KEY' | translate}}</div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+  </ion-card>
+</ion-content>
+

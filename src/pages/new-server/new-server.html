@@ -1,0 +1,80 @@
+<!--
+  Generated template for the NewServer page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'CREATE_NEW_SERVER' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label>{{'FROM_BACKUP' | translate}}</ion-label>
+      <ion-toggle checked="false" color="primary" right [(ngModel)]="fromBackup"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'DATA_CENTER' | translate}}</ion-label>
+      <ion-select [(ngModel)]="loc">
+        <ion-option *ngFor="let l of locations" [value]="l">{{l.description}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="loc && !fromBackup">
+      <ion-label>{{'IMAGE' | translate}}</ion-label>
+      <ion-select [(ngModel)]="imageId">
+        <ion-option *ngFor="let i of loc.templates">{{i}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="loc && fromBackup">
+      <ion-label>{{'IMAGE' | translate}}</ion-label>
+      <ion-select [(ngModel)]="imageId">
+        <ion-option *ngFor="let b of backups" [value]="b.id" [disabled]="b.location !== loc.id">{{b.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="imageId">
+      <ion-label>{{'CONFIGURATION' | translate}}</ion-label>
+      <ion-select [(ngModel)]="cfg">
+        <ion-option *ngFor="let c of getPlans()">{{c}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="imageId">
+      <ion-label fixed>{{'SERVER_NAME' | translate}}</ion-label>
+      <ion-input type="text" [(ngModel)]="name" required></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="keys && imageId">
+      <ion-label>SSH {{'KEYS' | translate}}</ion-label>
+      <ion-select [(ngModel)]="selectedKeys" multiple="true" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate">
+        <ion-option *ngFor="let k of keys" [value]="k.id">{{k.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="imageId">
+      <ion-label fixed>{{'PASSWORD' | translate}}</ion-label>
+      <ion-input type="password" [(ngModel)]="password"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="imageId && cfg && name && (selectedKeys || password)">
+      <ion-row>
+        <ion-col center text-center>
+          <button ion-button icon-left clear small (click)="createServer()">
+            <ion-icon name="cloud"></ion-icon>
+            <div>{{'CREATE_SERVER' | translate}}</div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

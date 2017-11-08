@@ -1,0 +1,52 @@
+<!--
+  Generated template for the Backup page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>
+      <ion-icon name="cloud" style="margin-right: 10px;" [color]="backup.active ? 'secondary' : 'danger'"></ion-icon> <b>{{backup.name}}</b>
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)" >
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-icon name="cloud" style="margin-right: 10px;" [color]="backup.active ? 'secondary' : 'danger'"></ion-icon> <b>{{backup.name}}</b>
+    </ion-card-header>
+    <ion-card-content>
+      <p><ion-icon name="clock" style="margin-right: 10px;"></ion-icon>{{backup.created}}</p>
+      <p *ngIf="location"><ion-icon name="pin" style="margin-right: 10px;"></ion-icon>{{location.description}}</p>
+    </ion-card-content>
+    <ion-row *ngIf="!backup.locked">
+      <ion-col center text-center>
+        <button ion-button icon-left clear small (click)="delete()">
+          <ion-icon name="remove-circle" color="danger"></ion-icon>
+          <div>{{'DELETE' | translate}}</div>
+        </button>
+      </ion-col>
+      <ion-col center text-center *ngIf="servers">
+        <button ion-button icon-left clear small (click)="rebuild()">
+          <ion-icon name="cloud-upload" color="secondary"></ion-icon>
+          <div>{{'RESTORE' | translate}}</div>
+        </button>
+      </ion-col>
+      <ion-col center text-center *ngIf="locations">
+        <button ion-button icon-left clear small (click)="relocate()">
+          <ion-icon name="cloud-download"></ion-icon>
+          <div>{{'RELOCATE' | translate}}</div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>

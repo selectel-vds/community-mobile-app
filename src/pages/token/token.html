@@ -1,0 +1,52 @@
+<!--
+  Generated template for the Token page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'LOGIN' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #loginForm="ngForm" validate>
+    <ion-row>
+      <ion-col center text-center>
+        {{'DESC_1_1' | translate}} <b>vscale.io</b>. {{'DESC_1_2' | translate}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col center text-center>
+        <ion-item>
+          <ion-label floating color="primary">{{'TOKEN' | translate}}</ion-label>
+          <ion-input type="text"
+                     name="token"
+                     maxlength="64"
+                     minlength="64"
+                     pattern="[A-Za-z0-9]{64}"
+                     [(ngModel)]="token" required></ion-input>
+      </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col center text-center>
+        <button ion-button (click)="login()" [disabled]="!loginForm.valid">{{'LOGIN' | translate}}</button>
+        <button ion-button (click)="scan()">{{'SCAN_QR_CODE' | translate}}</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col center text-center>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col center text-center>
+        {{'DESC_2_1' | translate}} <b>vscale.io</b> {{'DESC_2_2' | translate}}
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

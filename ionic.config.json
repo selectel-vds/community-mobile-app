@@ -1,0 +1,14 @@
+{
+  "name": "vscale",
+  "app_id": "",
+  "proxies": [
+    {
+      "path": "/v1",
+      "proxyUrl": "https://api.vscale.io/v1"
+    }
+  ],
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
